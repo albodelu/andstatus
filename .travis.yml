@@ -4,9 +4,8 @@
 # https://github.com/travis-ci/travis-ci/issues/6122 Android - Missing emulator ABI due to bad SDK Tools version
 language: android
 jdk: oraclejdk8
-sudo: required # false for Container-Based Infrastructure, required for Sudo-enabled Infrastructure
-dist: trusty
-group: edge  # Add this
+sudo: false # false for Container-Based Infrastructure, required for Sudo-enabled Infrastructure
+dist: precise
 
 env:
   global:
