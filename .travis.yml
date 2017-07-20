@@ -4,8 +4,9 @@
 # https://github.com/travis-ci/travis-ci/issues/6122 Android - Missing emulator ABI due to bad SDK Tools version
 language: android
 jdk: oraclejdk8
-sudo: false # false for Container-Based Infrastructure, required for Sudo-enabled Infrastructure
+sudo: required # false for Container-Based Infrastructure, required for Sudo-enabled Infrastructure
 dist: precise
+group: deprecated-2017Q2
 
 env:
   global:
@@ -68,7 +69,7 @@ install:
   - echo yes | sdkmanager "${EMULATOR}" # Install emulator system image
   # Create and start emulator
   - echo no | avdmanager create avd -n acib -k "${EMULATOR}" -f --abi "${EMULATOR_ABI}" --tag "${EMULATOR_TAG}"
-  - emulator -avd acib -no-window -camera-back none -camera-front none -verbose &
+  - emulator -avd acib -engine classic -no-window -camera-back none -camera-front none -verbose -memory 2048 &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
   # Show version and download Gradle Wrapper if it's not already cached
