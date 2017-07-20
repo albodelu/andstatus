@@ -10,7 +10,7 @@ group: deprecated-2017Q2
 
 env:
   global:
-    - ANDROID_BUILD_TOOLS_VERSION=25.0.3 # Match build-tools version used in build.gradle
+    - ANDROID_BUILD_TOOLS_VERSION=26.0.0 # Match build-tools version used in build.gradle
     - PROJECT_DIR=${TRAVIS_BUILD_DIR} # Project directory
     - EMULATOR_API_LEVEL=25 # Android API level 25 by default
     - EMULATOR_TAG=google_apis # Google APIs by default, alternatively use default
