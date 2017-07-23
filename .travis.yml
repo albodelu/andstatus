@@ -19,22 +19,13 @@ env:
     - GRADLE_USER_HOME="${TRAVIS_BUILD_DIR}/gradle" # Change location for Gradle Wrapper and cache
     - ANDROID_HOME=/usr/local/android-sdk-25.2.3 # Depends on the cookbooks version used in the VM
     - TOOLS=${ANDROID_HOME}/tools # PATH order matters, exists more than one emulator script
-    - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
+    - PATH=${ANDROID_HOME}:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}:${ANDROID_HOME}/emulator
     - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
 
 android:
   components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/blob/15e4d29b95df2f011aa99c295ebb1f664b6619c0/community-cookbooks/android-sdk/attributes/default.rb
     - build-tools-${ANDROID_BUILD_TOOLS_VERSION}
     - sys-img-armeabi-v7a-google_apis-25
-    - sys-img-armeabi-v7a-default-25
-    - sys-img-armeabi-v7a-android-25
-
-#matrix:
-#  include: # More Emulator API levels to build in parallel
-#    - env: EMULATOR_API_LEVEL=23
-#  allow_failures:
-#    - env: EMULATOR_API_LEVEL=23
-#  fast_finish: false
 
 before_cache:
   - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
@@ -67,20 +58,15 @@ install:
 
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-#  - echo yes | sdkmanager "${EMULATOR}" # Install emulator system image
   # Create and start emulator
   - android list sdk
   - android list sdk --extended
   - android list sdk --extended -a
   - android list targets
-  - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" --device 'Nexus 4' -c 128M
-  - emulator -avd acib -engine classic -skin 768x1280 -no-window -camera-back none -camera-front none -verbose -memory 2048 &
+  - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" -s "768x1280" --device 'Nexus 4' -c 128M
+  - emulator -avd acib  -no-window -no-audio &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
-  # Show version and download Gradle Wrapper if it's not already cached
-  - cd ${PROJECT_DIR} && ./gradlew --version
-  # Clean project and download missing dependencies and components
-  - cd ${PROJECT_DIR} && ./gradlew clean build
   # Check components status
   - sdkmanager --list || true
 
