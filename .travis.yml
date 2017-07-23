@@ -71,6 +71,7 @@ install:
   # Create and start emulator
   - android list sdk
   - android list sdk --extended
+  - android list sdk --extended -a
   - android list targets
   - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" --device 'Nexus 4' -c 128M
   - emulator -avd acib -engine classic -skin 768x1280 -no-window -camera-back none -camera-front none -verbose -memory 2048 &
