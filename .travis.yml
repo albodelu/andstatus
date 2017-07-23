@@ -25,9 +25,9 @@ env:
 android:
   components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/blob/15e4d29b95df2f011aa99c295ebb1f664b6619c0/community-cookbooks/android-sdk/attributes/default.rb
     - build-tools-${ANDROID_BUILD_TOOLS_VERSION}
-    - sys-img-armeabi-v7a-addon-google_apis-google-25
-    - sys-img-armeabi-v7a-android-25
     - sys-img-armeabi-v7a-google_apis-25
+    - sys-img-armeabi-v7a-default-25
+    - sys-img-armeabi-v7a-android-25
 
 #matrix:
 #  include: # More Emulator API levels to build in parallel
@@ -69,7 +69,8 @@ install:
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 #  - echo yes | sdkmanager "${EMULATOR}" # Install emulator system image
   # Create and start emulator
-  - android list sdk extended --use-sdk-wrapper
+  - android list sdk
+  - android list sdk --extended
   - android list targets
   - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" --device 'Nexus 4' -c 128M
   - emulator -avd acib -engine classic -skin 768x1280 -no-window -camera-back none -camera-front none -verbose -memory 2048 &
