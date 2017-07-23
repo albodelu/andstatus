@@ -36,6 +36,12 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
     }
+
+    // This enables long timeouts required on slow environments, e.g. Travis
+    adbOptions {
+        timeOutInMs 20 * 60 * 1000  // 20 minutes
+        installOptions "-d","-t"
+    }
 }
 
 sonarqube {
