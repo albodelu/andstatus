@@ -64,7 +64,7 @@ install:
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
   - echo yes | sdkmanager "${EMULATOR}" # Install emulator system image
   # Create and start emulator
-  - echo no | android create avd -n acib -k "${EMULATOR}" -f --abi "${EMULATOR_ABI}" --tag "${EMULATOR_TAG}"
+  - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_ABI}" --tag "${EMULATOR_TAG}"
   - emulator -avd acib -engine classic -no-window -camera-back none -camera-front none -verbose -memory 2048 &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
