@@ -59,8 +59,8 @@ install:
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 #  - echo yes | sdkmanager "${EMULATOR}" # Install emulator system image
   # Create and start emulator
-  - echo no | android create avd -n acib -k "${EMULATOR}" -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" -s "768x1280" --device 'Nexus 4' -c 128M
-  - emulator -avd acib -no-window -no-boot-anim &
+  - echo no | android create avd -n acib -k "${EMULATOR}" -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" --device 'Nexus 4' -c 128M
+  - emulator -avd acib -no-window -no-boot-anim -skin 768x1280 &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
   # Check components status
