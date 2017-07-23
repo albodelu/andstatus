@@ -25,6 +25,9 @@ env:
 android:
   components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/blob/15e4d29b95df2f011aa99c295ebb1f664b6619c0/community-cookbooks/android-sdk/attributes/default.rb
     - build-tools-${ANDROID_BUILD_TOOLS_VERSION}
+    - sys-img-armeabi-v7a-addon-google_apis-google-25
+    - sys-img-armeabi-v7a-android-25
+    - sys-img-armeabi-v7a-google_apis-25
 
 #matrix:
 #  include: # More Emulator API levels to build in parallel
@@ -56,7 +59,7 @@ install:
   - sdkmanager --list || true
   - sdkmanager --uninstall "extras;google;google_play_services"
   # Update sdk tools to latest version and install/update components
-  - echo yes | sdkmanager "platforms;android-25" # Latest platform required by SDK tools
+#  - echo yes | sdkmanager "platforms;android-25" # Latest platform required by SDK tools
   - echo yes | sdkmanager "platforms;android-${EMULATOR_API_LEVEL}" # Android platform required by emulator
   - echo yes | sdkmanager "extras;android;m2repository"
   - echo yes | sdkmanager "extras;google;m2repository"
@@ -64,8 +67,9 @@ install:
 
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-  - echo yes | sdkmanager "${EMULATOR}" # Install emulator system image
+#  - echo yes | sdkmanager "${EMULATOR}" # Install emulator system image
   # Create and start emulator
+  - android list sdk extended --use-sdk-wrapper
   - android list targets
   - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" --device 'Nexus 4' -c 128M
   - emulator -avd acib -engine classic -skin 768x1280 -no-window -camera-back none -camera-front none -verbose -memory 2048 &
