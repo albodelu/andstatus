@@ -19,7 +19,7 @@ env:
     - GRADLE_USER_HOME="${TRAVIS_BUILD_DIR}/gradle" # Change location for Gradle Wrapper and cache
     - ANDROID_HOME=/usr/local/android-sdk-25.2.3 # Depends on the cookbooks version used in the VM
     - TOOLS=${ANDROID_HOME}/tools # PATH order matters, exists more than one emulator script
-    - PATH=${ANDROID_HOME}:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}:${ANDROID_HOME}/emulator
+    - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
     - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
 
 android:
@@ -61,7 +61,7 @@ install:
   # Create and start emulator
   - android list targets
   - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" -s "768x1280" --device 'Nexus 4' -c 128M
-  - emulator -avd acib  -no-window &
+  - emulator -avd acib -no-window &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
   # Check components status
@@ -69,7 +69,8 @@ install:
 
 before_script:
   # Wait for emulator fully-booted and disable animations
-#  - android-wait-for-emulator
+  - adb devices
+  - android-wait-for-emulator
   - adb shell settings put global window_animation_scale 0 &
   - adb shell settings put global transition_animation_scale 0 &
   - adb shell settings put global animator_duration_scale 0 &
