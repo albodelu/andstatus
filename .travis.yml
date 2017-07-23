@@ -59,9 +59,6 @@ install:
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
   # Create and start emulator
-  - android list sdk
-  - android list sdk --extended
-  - android list sdk --extended -a
   - android list targets
   - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" -s "768x1280" --device 'Nexus 4' -c 128M
   - emulator -avd acib  -no-window &
@@ -72,10 +69,7 @@ install:
 
 before_script:
   # Wait for emulator fully-booted and disable animations
-  - ls /usr/local -Al
-  - ls /usr/local/scripts -Al || true
-  - cat android-wait-for-emulator
-  - android-wait-for-emulator
+#  - android-wait-for-emulator
   - adb shell settings put global window_animation_scale 0 &
   - adb shell settings put global transition_animation_scale 0 &
   - adb shell settings put global animator_duration_scale 0 &
