@@ -61,7 +61,7 @@ install:
   # Create and start emulator
   - android list targets
   - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" -s "768x1280" --device 'Nexus 4' -c 128M
-  - emulator -avd acib -no-window &
+  - emulator -avd acib -no-window -no-boot-anim &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
   # Check components status
@@ -70,7 +70,7 @@ install:
 before_script:
   # Wait for emulator fully-booted and disable animations
   - adb devices
-  - android-wait-for-emulator
+#  - android-wait-for-emulator
   - adb shell settings put global window_animation_scale 0 &
   - adb shell settings put global transition_animation_scale 0 &
   - adb shell settings put global animator_duration_scale 0 &
