@@ -24,10 +24,7 @@ env:
 
 android:
   components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/blob/15e4d29b95df2f011aa99c295ebb1f664b6619c0/community-cookbooks/android-sdk/attributes/default.rb
-#    - tools # Update preinstalled tools from revision 25.2.3 to 25.2.5
     - build-tools-${ANDROID_BUILD_TOOLS_VERSION}
-#    - platform-tools # Update platform-tools to revision 26+
-#    - tools # Update tools from revision 24.4.1 to 25.2.5
 
 #matrix:
 #  include: # More Emulator API levels to build in parallel
@@ -59,7 +56,6 @@ install:
   - sdkmanager --list || true
   - sdkmanager --uninstall "extras;google;google_play_services"
   # Update sdk tools to latest version and install/update components
-#  - echo yes | sdkmanager "tools"
   - echo yes | sdkmanager "platforms;android-25" # Latest platform required by SDK tools
   - echo yes | sdkmanager "platforms;android-${EMULATOR_API_LEVEL}" # Android platform required by emulator
   - echo yes | sdkmanager "extras;android;m2repository"
@@ -68,7 +64,7 @@ install:
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
   - echo yes | sdkmanager "${EMULATOR}" # Install emulator system image
   # Create and start emulator
-  - echo no | avdmanager create avd -n acib -k "${EMULATOR}" -f --abi "${EMULATOR_ABI}" --tag "${EMULATOR_TAG}"
+  - echo no | android create avd -n acib -k "${EMULATOR}" -f --abi "${EMULATOR_ABI}" --tag "${EMULATOR_TAG}"
   - emulator -avd acib -engine classic -no-window -camera-back none -camera-front none -verbose -memory 2048 &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
