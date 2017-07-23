@@ -64,7 +64,7 @@ install:
   - android list sdk --extended -a
   - android list targets
   - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" -s "768x1280" --device 'Nexus 4' -c 128M
-  - emulator -avd acib  -no-window -no-audio &
+  - emulator -avd acib  -no-window &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
   # Check components status
