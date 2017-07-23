@@ -60,12 +60,14 @@ install:
   - echo yes | sdkmanager "platforms;android-${EMULATOR_API_LEVEL}" # Android platform required by emulator
   - echo yes | sdkmanager "extras;android;m2repository"
   - echo yes | sdkmanager "extras;google;m2repository"
+  - echo yes | sdkmanager 'extras;google;google_play_services'
+
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
   - echo yes | sdkmanager "${EMULATOR}" # Install emulator system image
   # Create and start emulator
-  - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_ABI}" --tag "${EMULATOR_TAG}"
-  - emulator -avd acib -engine classic -no-window -camera-back none -camera-front none -verbose -memory 2048 &
+  - echo no | android create avd -n acib -t android-${EMULATOR_API_LEVEL} -f --abi "${EMULATOR_TAG}/${EMULATOR_ABI}" --tag "${EMULATOR_TAG}" --device 'Nexus 4' -c 128M
+  - emulator -avd acib -engine classic -skin 768x1280 -no-window -camera-back none -camera-front none -verbose -memory 2048 &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
   # Show version and download Gradle Wrapper if it's not already cached
